@@ -1,1 +1,4 @@
 pytorch
+mne
+requests
+scikit-learn
