@@ -1,4 +1,4 @@
-pytorch
+torch
 mne
 requests
 scikit-learn
