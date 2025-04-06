@@ -2,3 +2,4 @@ torch
 mne
 requests
 scikit-learn
+python-dotenv

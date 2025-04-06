@@ -3,8 +3,16 @@ import mne
 import numpy as np
 import matplotlib.pyplot as plt
 
+# you can create a .env file to store paths so that its not here in the source code :>
+from dotenv import load_dotenv
+load_dotenv()
+
 dataset_path = r"C:\Users\HYUN\capstone\LBM\dataset_unsupervised"
 output_path = r"C:\Users\HYUN\capstone\LBM"
+
+dataset_path = os.getenv("DATA_PATH", dataset_path)
+output_path = os.getenv("OUT_PATH", output_path)
+
 os.makedirs(output_path, exist_ok=True)
 
 all_psds = []
