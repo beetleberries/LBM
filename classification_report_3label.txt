@@ -1,0 +1,13 @@
+Accuracy: 1.0000
+F1-score (weighted): 1.0000
+
+Classification Report:
+              precision    recall  f1-score   support
+
+      Drowsy       0.00      0.00      0.00         0
+      Normal       1.00      1.00      1.00        13
+  Distracted       0.00      0.00      0.00         0
+
+   micro avg       1.00      1.00      1.00        13
+   macro avg       0.33      0.33      0.33        13
+weighted avg       1.00      1.00      1.00        13
