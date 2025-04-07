@@ -1,0 +1,5 @@
+to train with gpu
+run nvidia-smi
+
+uv pip uninstall torch torchvision torchaudio -y
+uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126

@@ -133,6 +133,7 @@ celerybeat.pid
 .env
 .venv
 env/
+old_mne_env/
 venv/
 ENV/
 env.bak/
