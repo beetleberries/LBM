@@ -3,3 +3,12 @@ run nvidia-smi
 
 uv pip uninstall torch torchvision torchaudio -y
 uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
+
+
+
+oh I remember this dataset use the response time (RT) to label 
+ 
+so if the RT is low, then the driver is alter 
+ 
+otherwise he is drowsy
+ 
