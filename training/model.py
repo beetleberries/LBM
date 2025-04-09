@@ -11,35 +11,38 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 import seaborn as sns # For plotting confusion matrix
 import math
 
+import argparse # Import argparse
+
 # --- Configuration ---
 # Data Paths (MODIFY THESE)
 
-SAVE_DIR = './processed_data' # Create this directory if it doesn't exist
-EPOCHS_DATA_PATH = os.path.join(SAVE_DIR, 'processed_epochs.npy')
-LABELS_PATH = os.path.join(SAVE_DIR, 'processed_labels.npy')
+SAVE_DIR = './processed_data_ica' # Create this directory if it doesn't exist
+EPOCHS_DATA_PATH = os.path.join(SAVE_DIR, 's02_051115m_epochs_ica_std.npy')
+LABELS_PATH = os.path.join(SAVE_DIR, 's02_051115m_labels.npy')
 
 
 # Model Hyperparameters (Tune these!)
 # VQ-VAE
-VQ_EMBEDDING_DIM = 64       # Dimension of each codebook vector
-VQ_NUM_EMBEDDINGS = 128     # Size of the codebook (K)
-VQ_COMMITMENT_COST = 0.25   # Beta term in the VQ loss
+VQ_EMBEDDING_DIM = 128       # Dimension of each codebook vector
+VQ_NUM_EMBEDDINGS = 256     # Size of the codebook (K)
+VQ_COMMITMENT_COST = 0.5   # Beta term in the VQ loss
 VQ_DECAY = 0.99             # For EMA updates
+PERCENT_CODEBOOK = 0.2      # percent of codebook filled to continue to next step
+VQ_LR = 1e-4
+VQ_EPOCHS = 200 # Adjust based on convergence
 
 # Transformer
 T_DIM = VQ_EMBEDDING_DIM    # Dimension for Transformer (usually matches VQ embedding)
-T_NHEAD = 4                 # Number of attention heads
-T_NUMLAYERS = 3             # Number of Transformer encoder layers
+T_NHEAD = 8                 # Number of attention heads
+T_NUMLAYERS = 6             # Number of Transformer encoder layers
 T_DIM_FEEDFORWARD = 256     # Dimension of feedforward layers in Transformer
 T_DROPOUT = 0.1
+T_LR = 1e-5
+T_EPOCHS = 60 # Adjust based on convergence
 
 # Training Hyperparameters
 NUM_CLASSES = 3            # alert, transition, drowsy
 BATCH_SIZE = 32
-VQ_LR = 5e-5
-VQ_EPOCHS = 20 # Adjust based on convergence
-T_LR = 1e-4
-T_EPOCHS = 30 # Adjust based on convergence
 TEST_SPLIT_RATIO = 0.2
 RANDOM_SEED = 42 # For reproducibility
 
@@ -91,39 +94,54 @@ class VectorQuantizerEMA(nn.Module):
 
         # EMA codebook update during training
         if self.training:
+            # --- FIX: Use .detach() for tensors involved ONLY in EMA updates ---
+            encodings_for_ema = encodings.detach()
+            flat_input_for_ema = flat_input.detach()
+            # -----------------------------------------------------------------
+
             self.ema_cluster_size = self.ema_cluster_size * self.decay + \
-                                     (1 - self.decay) * torch.sum(encodings, 0)
+                                     (1 - self.decay) * torch.sum(encodings_for_ema, 0) # Use detached
 
             # Laplace smoothing to avoid zero counts
-            n = torch.sum(self.ema_cluster_size.data)
-            self.ema_cluster_size = (
-                (self.ema_cluster_size + self.epsilon)
-                / (n + self.num_embeddings * self.epsilon) * n)
+            # Accessing .data is generally okay for buffer updates if needed,
+            # but let's be consistent and ensure calculations don't attach gradients.
+            # Note: Using .data might become deprecated. The detach approach is safer.
+            with torch.no_grad(): # Use no_grad context for safety on subsequent updates
+                n = torch.sum(self.ema_cluster_size) # Sum within no_grad
+                self.ema_cluster_size = (
+                    (self.ema_cluster_size + self.epsilon)
+                    / (n + self.num_embeddings * self.epsilon) * n)
 
-            dw = torch.matmul(encodings.t(), flat_input)
-            self.ema_w = self.ema_w * self.decay + (1 - self.decay) * dw
+                dw = torch.matmul(encodings_for_ema.t(), flat_input_for_ema) # Use detached
+                self.ema_w = self.ema_w * self.decay + (1 - self.decay) * dw
 
-            # Update embedding weights
-            self.embedding.weight.data.copy_(self.ema_w / self.ema_cluster_size.unsqueeze(1))
+                # Update embedding weights - Copying data is fine
+                self.embedding.weight.data.copy_(self.ema_w / self.ema_cluster_size.unsqueeze(1))
 
 
-        # Loss calculation
+        # Loss calculation - These should use the original tensors (with graph history)
         e_latent_loss = F.mse_loss(quantized.detach(), inputs) # Encoder loss
-        q_latent_loss = F.mse_loss(quantized, inputs.detach()) # Codebook loss (using EMA)
+        q_latent_loss = F.mse_loss(quantized, inputs.detach()) # Codebook loss
+        # Note: q_latent_loss uses inputs.detach() which might seem odd with EMA,
+        # but the gradient for the codebook comes implicitly through the EMA updates,
+        # not directly through this loss term's backward pass on the embedding.weight.
+        # However, let's calculate total loss *before* the STE step for clarity.
         loss = q_latent_loss + self.commitment_cost * e_latent_loss
 
         # Straight Through Estimator
-        quantized = inputs + (quantized - inputs).detach()
-        avg_probs = torch.mean(encodings, dim=0)
-        perplexity = torch.exp(-torch.sum(avg_probs * torch.log(avg_probs + 1e-10))) # codebook usage
+        quantized = inputs + (quantized - inputs).detach() # Keep this as is
 
-        # Reshape encoding_indices back to spatial structure for Transformer input
-        # (Batch * Height * Width) -> (Batch, Height * Width) or similar
-        # The exact shape depends on the encoder output before flattening
-        indices_for_transformer = encoding_indices.view(input_shape[0], -1) # Simple flatten for now
+        # Perplexity calculation - Use original encodings
+        with torch.no_grad(): # Perplexity doesn't need gradients
+            avg_probs = torch.mean(encodings, dim=0)
+            perplexity = torch.exp(-torch.sum(avg_probs * torch.log(avg_probs + 1e-10)))
+
+        # Reshape encoding_indices for transformer
+        indices_for_transformer = encoding_indices.view(input_shape[0], -1)
 
         return loss, quantized, perplexity, indices_for_transformer
 
+    # get_code_indices remains the same
     def get_code_indices(self, flat_input):
          # Simplified version for inference/encoding phase
          distances = (torch.sum(flat_input**2, dim=1, keepdim=True)
@@ -341,8 +359,9 @@ def train_vqvae(model, dataloader, optimizer, epochs, device):
 
 
     print("--- VQ-VAE Training Finished ---")
-    if (avg_perplexity < 0.1 * VQ_NUM_EMBEDDINGS):
-        print(f" perplexity too low {avg_perplexity} to attempt training transformer, should be at least 10% of codebook size: {VQ_NUM_EMBEDDINGS}")
+    
+    if (avg_perplexity < PERCENT_CODEBOOK * VQ_NUM_EMBEDDINGS):
+        print(f" perplexity too low {avg_perplexity} to attempt training transformer, should be at least {int(100 * PERCENT_CODEBOOK)}% of codebook size: {VQ_NUM_EMBEDDINGS}")
         exit()
 
 
@@ -438,6 +457,16 @@ def evaluate_transformer(model, dataloader, criterion, device):
 
 # --- 7. Main Execution ---
 if __name__ == "__main__":
+
+    # --- Argument Parsing ---
+    parser = argparse.ArgumentParser(description='Train VQ-VAE and Transformer for EEG classification.')
+    parser.add_argument('--load-vq', action='store_true', help='Load pre-trained VQ-VAE model instead of training.')
+    parser.add_argument('--load-transformer', action='store_true', help='Load pre-trained Transformer model instead of training.')
+    args = parser.parse_args()
+    # --- End Argument Parsing ---
+
+    print(f"Arguments: Load VQ={args.load_vq}, Load Transformer={args.load_transformer}")
+
     # --- Load Prepared Data ---
     print("Loading preprocessed data...")
     try:
@@ -452,7 +481,7 @@ if __name__ == "__main__":
 
     except FileNotFoundError:
         print(f"Error: Data files not found at {EPOCHS_DATA_PATH} or {LABELS_PATH}")
-        print("Please run the previous script to generate and save these files.")
+        print("Please run the previous script to generate and save these files if they do not exist.")
         exit()
     except Exception as e:
         print(f"Error loading data: {e}")
@@ -468,6 +497,8 @@ if __name__ == "__main__":
     label_map = {label: i for i, label in enumerate(unique_labels)}
     reverse_label_map = {v: k for k, v in label_map.items()}
     print(f"Label Map: {label_map}")
+
+    
 
 
     # --- Create Datasets and Dataloaders (for VQ-VAE training) ---
@@ -485,12 +516,24 @@ if __name__ == "__main__":
 
     vq_optimizer = optim.AdamW(vq_model.parameters(), lr=VQ_LR)
 
-    # Train the VQ-VAE
-    train_vqvae(vq_model, vq_dataloader, vq_optimizer, VQ_EPOCHS, device)
-
-    # Save the trained VQ-VAE
-    print(f"Saving trained VQ-VAE model to {VQ_MODEL_SAVE_PATH}")
-    torch.save(vq_model.state_dict(), VQ_MODEL_SAVE_PATH)
+    if args.load_vq:
+        if os.path.exists(VQ_MODEL_SAVE_PATH):
+            print(f"Loading pre-trained VQ-VAE model from {VQ_MODEL_SAVE_PATH} \n \n")
+            try:
+                vq_model.load_state_dict(torch.load(VQ_MODEL_SAVE_PATH, map_location=device))
+                vq_model.eval() # Set to evaluation mode if loaded
+            except Exception as e:
+                print(f"Error loading VQ-VAE model: {e}. Exiting.")
+                exit()
+        else:
+            print(f"Error: --load-vq specified, but model file not found at {VQ_MODEL_SAVE_PATH}. Exiting.")
+            exit()
+    else:
+        # Train the VQ-VAE
+        train_vqvae(vq_model, vq_dataloader, vq_optimizer, VQ_EPOCHS, device)
+        # Save the trained VQ-VAE
+        print(f"Saving trained VQ-VAE model to {VQ_MODEL_SAVE_PATH}")
+        torch.save(vq_model.state_dict(), VQ_MODEL_SAVE_PATH)
 
     # --- Encode the Full Dataset using Trained VQ-VAE ---
     # Create a dataloader *without* shuffling to keep data and labels aligned
@@ -506,6 +549,23 @@ if __name__ == "__main__":
         stratify=original_int_labels # Stratify to keep class distribution similar
     )
 
+        # --- Calculate Class Weights ---
+    print("\nCalculating class weights for weighted loss...")
+    label_counts = np.bincount(original_int_labels ) # Count occurrences of each integer label (0, 1, 2)
+    total_samples = len(original_int_labels )
+    if len(label_counts) != NUM_CLASSES:
+        print(f"Warning: Found {len(label_counts)} classes in data but expected {NUM_CLASSES}. Adjusting...")
+        # Handle cases where a class might be missing entirely in the initial data
+        full_label_counts = np.zeros(NUM_CLASSES, dtype=label_counts.dtype)
+        full_label_counts[:len(label_counts)] = label_counts
+        label_counts = full_label_counts
+
+    # Calculate weights: weight = total_samples / (num_classes * count_for_that_class)
+    class_weights = total_samples / (NUM_CLASSES * label_counts + 1e-9) # Add epsilon for stability if a count is 0
+    class_weights_tensor = torch.tensor(class_weights, dtype=torch.float).to(device)
+    print(f"Class counts: {label_counts}")
+    print(f"Calculated class weights: {class_weights_tensor.cpu().numpy()}")
+
     print(f"Encoded Train data shape: {indices_train.shape}, Labels: {labels_train.shape}")
     print(f"Encoded Test data shape: {indices_test.shape}, Labels: {labels_test.shape}")
 
@@ -513,7 +573,31 @@ if __name__ == "__main__":
     transformer_train_dataset = EncodedEEGDataset(indices_train, labels_train)
     transformer_test_dataset = EncodedEEGDataset(indices_test, labels_test)
 
-    transformer_train_loader = DataLoader(transformer_train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+    #using weighted sampling
+    from torch.utils.data import WeightedRandomSampler
+
+    print("\nConfiguring WeightedRandomSampler for balanced batches...")
+    # Ensure labels_train are numpy array for bincount
+    labels_train_np = np.array(labels_train)
+    class_counts_train = np.bincount(labels_train_np, minlength=NUM_CLASSES)
+
+    # Calculate weight for each sample in the training set
+    sample_weights = np.array([1.0 / class_counts_train[lbl] for lbl in labels_train_np])
+    sample_weights_tensor = torch.DoubleTensor(sample_weights) # Sampler needs DoubleTensor
+
+    # Create the sampler
+    train_sampler = WeightedRandomSampler(weights=sample_weights_tensor,
+                                        num_samples=len(sample_weights_tensor),
+                                        replacement=True) # replacement=True is common
+
+    print(f"Training class counts: {class_counts_train}")
+    print(f"Sampler created for {len(sample_weights_tensor)} train samples.")
+
+    transformer_train_loader = DataLoader(transformer_train_dataset,
+                                        batch_size=BATCH_SIZE,
+                                        sampler=train_sampler)
+
+    #transformer_train_loader = DataLoader(transformer_train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     transformer_test_loader = DataLoader(transformer_test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
 
@@ -530,10 +614,25 @@ if __name__ == "__main__":
     t_optimizer = optim.AdamW(transformer_model.parameters(), lr=T_LR)
     # Use CrossEntropyLoss for multi-class classification
     t_criterion = nn.CrossEntropyLoss()
+    #print("Using weighted CrossEntropyLoss for Transformer.")
+    #t_criterion = nn.CrossEntropyLoss(weight=class_weights_tensor)
 
-    # Train the Transformer (using train/test split loaders)
-    train_transformer(transformer_model, transformer_train_loader, transformer_test_loader,
-                      t_optimizer, t_criterion, T_EPOCHS, device, label_map)
+    if args.load_transformer:
+        if os.path.exists(T_MODEL_SAVE_PATH):
+            print(f"Loading pre-trained Transformer model from {T_MODEL_SAVE_PATH} \n \n ")
+            try:
+                transformer_model.load_state_dict(torch.load(T_MODEL_SAVE_PATH, map_location=device))
+                transformer_model.eval() # Set to evaluation mode
+            except Exception as e:
+                print(f"Error loading Transformer model: {e}. Exiting.")
+                exit()
+        else:
+            print(f"Error: --load-transformer specified, but model file not found at {T_MODEL_SAVE_PATH}. Exiting.")
+            exit()
+    else:
+        print("Training Transformer model...")
+        train_transformer(transformer_model, transformer_train_loader, transformer_test_loader,
+                          t_optimizer, t_criterion, T_EPOCHS, device, label_map) # Pass scheduler
 
     # --- Final Evaluation on Test Set ---
     print("\n--- Evaluating Final Transformer Model on Test Set ---")
