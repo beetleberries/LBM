@@ -16,20 +16,21 @@ import argparse # Import argparse
 # --- Configuration ---
 # Data Paths (MODIFY THESE)
 
-SAVE_DIR = './processed_data_ica' # Create this directory if it doesn't exist
-EPOCHS_DATA_PATH = os.path.join(SAVE_DIR, 's02_051115m_epochs_ica_std.npy')
-LABELS_PATH = os.path.join(SAVE_DIR, 's02_051115m_labels.npy')
-
+#SAVE_DIR = './processed_data_ica' # Create this directory if it doesn't exist
+#EPOCHS_DATA_PATH = os.path.join(SAVE_DIR, 's02_051115m_epochs_ica_std.npy')
+#LABELS_PATH = os.path.join(SAVE_DIR, 's02_051115m_labels.npy')
+EPOCHS_DATA_PATH = "D:/EEG/processed/combined_s02_epochs_ica_std.npy"
+LABELS_PATH = "D:/EEG/processed/combined_s02_labels.npy"
 
 # Model Hyperparameters (Tune these!)
 # VQ-VAE
 VQ_EMBEDDING_DIM = 128       # Dimension of each codebook vector
-VQ_NUM_EMBEDDINGS = 256     # Size of the codebook (K)
-VQ_COMMITMENT_COST = 0.5   # Beta term in the VQ loss
+VQ_NUM_EMBEDDINGS = 512     # Size of the codebook (K)
+VQ_COMMITMENT_COST = 0.1   # Beta term in the VQ loss
 VQ_DECAY = 0.99             # For EMA updates
 PERCENT_CODEBOOK = 0.2      # percent of codebook filled to continue to next step
 VQ_LR = 1e-4
-VQ_EPOCHS = 200 # Adjust based on convergence
+VQ_EPOCHS = 20 # Adjust based on convergence
 
 # Transformer
 T_DIM = VQ_EMBEDDING_DIM    # Dimension for Transformer (usually matches VQ embedding)
@@ -38,7 +39,7 @@ T_NUMLAYERS = 6             # Number of Transformer encoder layers
 T_DIM_FEEDFORWARD = 256     # Dimension of feedforward layers in Transformer
 T_DROPOUT = 0.1
 T_LR = 1e-5
-T_EPOCHS = 60 # Adjust based on convergence
+T_EPOCHS = 20 # Adjust based on convergence
 
 # Training Hyperparameters
 NUM_CLASSES = 3            # alert, transition, drowsy
