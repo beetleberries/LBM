@@ -22,8 +22,8 @@ LABELS_PATH = os.path.join(SAVE_DIR, 'processed_labels.npy')
 # Model Hyperparameters (Tune these!)
 # VQ-VAE
 VQ_EMBEDDING_DIM = 64       # Dimension of each codebook vector
-VQ_NUM_EMBEDDINGS = 512     # Size of the codebook (K)
-VQ_COMMITMENT_COST = 0.1   # Beta term in the VQ loss
+VQ_NUM_EMBEDDINGS = 128     # Size of the codebook (K)
+VQ_COMMITMENT_COST = 0.25   # Beta term in the VQ loss
 VQ_DECAY = 0.99             # For EMA updates
 
 # Transformer
@@ -36,7 +36,7 @@ T_DROPOUT = 0.1
 # Training Hyperparameters
 NUM_CLASSES = 3            # alert, transition, drowsy
 BATCH_SIZE = 32
-VQ_LR = 1e-4
+VQ_LR = 5e-5
 VQ_EPOCHS = 20 # Adjust based on convergence
 T_LR = 1e-4
 T_EPOCHS = 30 # Adjust based on convergence
@@ -341,6 +341,9 @@ def train_vqvae(model, dataloader, optimizer, epochs, device):
 
 
     print("--- VQ-VAE Training Finished ---")
+    if (avg_perplexity < 0.1 * VQ_NUM_EMBEDDINGS):
+        print(f" perplexity too low {avg_perplexity} to attempt training transformer, should be at least 10% of codebook size: {VQ_NUM_EMBEDDINGS}")
+        exit()
 
 
 def encode_data_for_transformer(vq_model, dataloader, device):
