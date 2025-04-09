@@ -323,6 +323,39 @@ if len(local_rts_filtered) > 0:
         print("\nEpochs created successfully!")
         print(epochs)
 
+        print("\n--- Saving Processed Epoch Data and Labels ---")
+
+        # Define file paths for saving (adjust as needed)
+        SAVE_DIR = './processed_data' # Create this directory if it doesn't exist
+        EPOCHS_SAVE_PATH = os.path.join(SAVE_DIR, 'processed_epochs.npy')
+        LABELS_SAVE_PATH = os.path.join(SAVE_DIR, 'processed_labels.npy')
+
+        # Create the directory if it doesn't exist
+        os.makedirs(SAVE_DIR, exist_ok=True)
+
+        try:
+            epochs_data_array = epochs.get_data()
+
+            if 'trials_df' in locals() and not trials_df.empty:
+                 labels_array = trials_df['vigilance_label'].values # Shape: (n_epochs,)
+            else:
+                 print("Error: Cannot find or access 'trials_df' to retrieve labels.")
+                 raise ValueError("Could not reliably get string labels for saving.")
+
+
+            # 3. Save the data and labels
+            np.save(EPOCHS_SAVE_PATH, epochs_data_array)
+            np.save(LABELS_SAVE_PATH, labels_array)
+
+            print(f"Successfully saved Epoch data to: {EPOCHS_SAVE_PATH}")
+            print(f"  Data shape: {epochs_data_array.shape}")
+            print(f"Successfully saved Labels to: {LABELS_SAVE_PATH}")
+            print(f"  Labels shape: {labels_array.shape}")
+            print(f"  Example Labels: {labels_array[:5]}") # Print first 5 labels
+
+        except Exception as e_save:
+            print(f"\nError saving processed data: {e_save}")
+
         # --- Optional: Visualize Epochs ---
         print("\nGenerating ERP plots for each existing vigilance state...")
         existing_conditions = list(epochs.event_id.keys())
@@ -355,5 +388,9 @@ if len(local_rts_filtered) > 0:
 
 else:
      print("\nNo valid Local Reaction Times (RT > 0) found, cannot classify trials or create epochs.")
+
+
+
+
 
 print("\nScript finished.")
