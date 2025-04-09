@@ -2,7 +2,8 @@
 torch
 torchvision
 torchaudio
-mne
+mne==1.5.1
 requests
 scikit-learn
 python-dotenv
+lion-pytorch
