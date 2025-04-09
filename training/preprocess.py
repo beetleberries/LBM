@@ -5,10 +5,12 @@ import os
 import pandas as pd
 from collections import Counter
 from mne.preprocessing import ICA # Import ICA
+from dotenv import load_dotenv
+load_dotenv()
 
 # --- Configuration ---
 # <<< SET THESE >>>
-set_file_path = 'D:/EEG/s02_051115m.set' # Path to your EEG file
+set_file_path = os.getenv("SET_EXAMPLE") # Path to your EEG file
 
 # --- Preprocessing Parameters ---
 FILTER_LFREQ = 4.0      # High-pass filter frequency (Hz)
