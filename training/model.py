@@ -15,35 +15,38 @@ import argparse # Import argparse
 
 # --- Configuration ---
 # Data Paths (MODIFY THESE)
+vq_losses = []
+vq_perplexities = []
+tf_test_accuracies = []
+tf_val_accuracies = []
 
-#SAVE_DIR = './processed_data_ica' # Create this directory if it doesn't exist
-#EPOCHS_DATA_PATH = os.path.join(SAVE_DIR, 's02_051115m_epochs_ica_std.npy')
-#LABELS_PATH = os.path.join(SAVE_DIR, 's02_051115m_labels.npy')
-EPOCHS_DATA_PATH = "D:/EEG/processed/combined_s02_epochs_ica_std.npy"
-LABELS_PATH = "D:/EEG/processed/combined_s02_labels.npy"
+#EPOCHS_DATA_PATH = "D:/EEG/processed/combined_s02_epochs_ica_std.npy"
+#LABELS_PATH = "D:/EEG/processed/combined_s02_labels.npy"
+EPOCHS_DATA_PATH = "D:/EEG/processed/combined_s02_stimlocked_std_rej_psd_time_epochs.npy"
+LABELS_PATH = "D:/EEG/processed/combined_s02_stimlocked_std_rej_psd_labels.npy"
 
 # Model Hyperparameters (Tune these!)
 # VQ-VAE
-VQ_EMBEDDING_DIM = 128       # Dimension of each codebook vector
+VQ_EMBEDDING_DIM = 256       # Dimension of each codebook vector
 VQ_NUM_EMBEDDINGS = 512     # Size of the codebook (K)
-VQ_COMMITMENT_COST = 0.1   # Beta term in the VQ loss
+VQ_COMMITMENT_COST = 0.25   # Beta term in the VQ loss
 VQ_DECAY = 0.99             # For EMA updates
 PERCENT_CODEBOOK = 0.2      # percent of codebook filled to continue to next step
-VQ_LR = 1e-4
-VQ_EPOCHS = 20 # Adjust based on convergence
+VQ_LR = 1e-5
+VQ_EPOCHS = 200 # Adjust based on convergence
 
 # Transformer
 T_DIM = VQ_EMBEDDING_DIM    # Dimension for Transformer (usually matches VQ embedding)
 T_NHEAD = 8                 # Number of attention heads
 T_NUMLAYERS = 6             # Number of Transformer encoder layers
 T_DIM_FEEDFORWARD = 256     # Dimension of feedforward layers in Transformer
-T_DROPOUT = 0.1
-T_LR = 1e-5
-T_EPOCHS = 20 # Adjust based on convergence
+T_DROPOUT = 0.2
+T_LR = 1e-4
+T_EPOCHS = 150 # Adjust based on convergence
 
 # Training Hyperparameters
 NUM_CLASSES = 3            # alert, transition, drowsy
-BATCH_SIZE = 32
+BATCH_SIZE = 64
 TEST_SPLIT_RATIO = 0.2
 RANDOM_SEED = 42 # For reproducibility
 
@@ -357,6 +360,8 @@ def train_vqvae(model, dataloader, optimizer, epochs, device):
         avg_recon_loss = total_recon_loss / len(dataloader)
         avg_perplexity = total_perplexity / len(dataloader)
         print(f"VQ Epoch {epoch+1} Avg Loss: {(avg_vq_loss + avg_recon_loss):.4f} (VQ: {avg_vq_loss:.4f}, Recon: {avg_recon_loss:.4f}, Avg Perplexity: {avg_perplexity:.2f})")
+        vq_losses.append(avg_vq_loss)
+        vq_perplexities.append(avg_perplexity)
 
 
     print("--- VQ-VAE Training Finished ---")
@@ -421,6 +426,9 @@ def train_transformer(model, train_loader, val_loader, optimizer, criterion, epo
         # --- Validation Phase ---
         val_loss, val_accuracy, _, _ = evaluate_transformer(model, val_loader, criterion, device)
 
+
+        tf_test_accuracies.append(train_accuracy)
+        tf_val_accuracies.append(val_accuracy)
         print(f"Epoch {epoch+1} | Train Loss: {avg_train_loss:.4f} | Train Acc: {train_accuracy:.4f}, Val Loss  : {val_loss:.4f} | Val Acc  : {val_accuracy:.4f}")
 
         # Save model if validation accuracy improves
@@ -670,6 +678,29 @@ if __name__ == "__main__":
     plt.xlabel('Predicted Label')
     plt.ylabel('True Label')
     plt.title('Confusion Matrix on Test Set')
+    plt.show()
+
+
+    plt.figure(figsize=(12, 5))
+    # Loss Plot
+    plt.subplot(1, 2, 1)
+    plt.plot(vq_losses, label=' vq loss')
+    plt.plot(vq_perplexities, label='vq perplexity')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.title('Loss Curve')
+    plt.legend()
+
+    # Accuracy Plot
+    plt.subplot(1, 2, 2)
+    plt.plot(tf_test_accuracies, label='Train Accuracy')
+    plt.plot(tf_val_accuracies, label='Val Accuracy')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    plt.title('Accuracy Curve')
+    plt.legend()
+
+    plt.tight_layout()
     plt.show()
 
     print("\nScript finished.")
