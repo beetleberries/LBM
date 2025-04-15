@@ -20,10 +20,8 @@ vq_perplexities = []
 tf_test_accuracies = []
 tf_val_accuracies = []
 
-#EPOCHS_DATA_PATH = "D:/EEG/processed/combined_s02_epochs_ica_std.npy"
-#LABELS_PATH = "D:/EEG/processed/combined_s02_labels.npy"
-EPOCHS_DATA_PATH = "D:/EEG/processed/combined_s02_stimlocked_std_rej_psd_time_epochs.npy"
-LABELS_PATH = "D:/EEG/processed/combined_s02_stimlocked_std_rej_psd_labels.npy"
+EPOCHS_DATA_PATH = "C:/Users/HYUN/capstone/LBM/processed_data_ica/all_epochs_ica_std.npy"
+LABELS_PATH = "C:/Users/HYUN/capstone/LBM/processed_data_ica/all_labels_ica.npy"
 
 # Model Hyperparameters (Tune these!)
 # VQ-VAE
@@ -51,8 +49,8 @@ TEST_SPLIT_RATIO = 0.2
 RANDOM_SEED = 42 # For reproducibility
 
 # Paths for saving models
-VQ_MODEL_SAVE_PATH = './training/vq_vae_model.pth'
-T_MODEL_SAVE_PATH = './training/transformer_classifier.pth'
+VQ_MODEL_SAVE_PATH = './training/vq_vae_model_v2.pth'
+T_MODEL_SAVE_PATH = './training/transformer_classifier_v2.pth'
 
 # --- Device Setup ---
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
