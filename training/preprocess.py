@@ -8,7 +8,7 @@ from mne.preprocessing import ICA # Import ICA
 
 # --- Configuration ---
 # <<< SET THESE >>>
-SET_FOLDER = "C:/Users/HYUN/capstone/LBM/dataset_unsupervised"  
+SET_FOLDER = "D:/capstone/LBM/dataset_unsupervised"  
 set_file_paths = [os.path.join(SET_FOLDER, f) for f in os.listdir(SET_FOLDER) if f.endswith(".set")]
 
 

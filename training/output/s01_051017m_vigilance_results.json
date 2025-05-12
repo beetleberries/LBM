@@ -1,0 +1,1388 @@
+[
+  {
+    "epoch_index": 0,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.442183256149292,
+      "transition": 0.1060338094830513,
+      "drowsy": 0.4517829418182373
+    }
+  },
+  {
+    "epoch_index": 1,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.3518671989440918,
+      "transition": 0.2526867687702179,
+      "drowsy": 0.3954460322856903
+    }
+  },
+  {
+    "epoch_index": 2,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8910697102546692,
+      "transition": 0.022677935659885406,
+      "drowsy": 0.08625238388776779
+    }
+  },
+  {
+    "epoch_index": 3,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8318219780921936,
+      "transition": 0.04379752278327942,
+      "drowsy": 0.12438051402568817
+    }
+  },
+  {
+    "epoch_index": 4,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.5314971208572388,
+      "transition": 0.22364376485347748,
+      "drowsy": 0.24485908448696136
+    }
+  },
+  {
+    "epoch_index": 5,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7591499090194702,
+      "transition": 0.05570793151855469,
+      "drowsy": 0.18514209985733032
+    }
+  },
+  {
+    "epoch_index": 6,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.9150735139846802,
+      "transition": 0.02115347981452942,
+      "drowsy": 0.06377303600311279
+    }
+  },
+  {
+    "epoch_index": 7,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7686808705329895,
+      "transition": 0.044416796416044235,
+      "drowsy": 0.18690237402915955
+    }
+  },
+  {
+    "epoch_index": 8,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.13687428832054138,
+      "transition": 0.48927977681159973,
+      "drowsy": 0.3738459348678589
+    }
+  },
+  {
+    "epoch_index": 9,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.546966016292572,
+      "transition": 0.2252604365348816,
+      "drowsy": 0.22777357697486877
+    }
+  },
+  {
+    "epoch_index": 10,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7153383493423462,
+      "transition": 0.07170945405960083,
+      "drowsy": 0.21295222640037537
+    }
+  },
+  {
+    "epoch_index": 11,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7626743316650391,
+      "transition": 0.07280835509300232,
+      "drowsy": 0.16451725363731384
+    }
+  },
+  {
+    "epoch_index": 12,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8135302066802979,
+      "transition": 0.03779260441660881,
+      "drowsy": 0.14867717027664185
+    }
+  },
+  {
+    "epoch_index": 13,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.732377290725708,
+      "transition": 0.07516888529062271,
+      "drowsy": 0.19245381653308868
+    }
+  },
+  {
+    "epoch_index": 14,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7825947403907776,
+      "transition": 0.06772229075431824,
+      "drowsy": 0.1496829390525818
+    }
+  },
+  {
+    "epoch_index": 15,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.5094302296638489,
+      "transition": 0.2096748948097229,
+      "drowsy": 0.2808948755264282
+    }
+  },
+  {
+    "epoch_index": 16,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6416881084442139,
+      "transition": 0.08224444091320038,
+      "drowsy": 0.27606743574142456
+    }
+  },
+  {
+    "epoch_index": 17,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7346612215042114,
+      "transition": 0.10534551739692688,
+      "drowsy": 0.15999332070350647
+    }
+  },
+  {
+    "epoch_index": 18,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.18497081100940704,
+      "transition": 0.29197585582733154,
+      "drowsy": 0.5230533480644226
+    }
+  },
+  {
+    "epoch_index": 19,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8037886023521423,
+      "transition": 0.05235328897833824,
+      "drowsy": 0.14385807514190674
+    }
+  },
+  {
+    "epoch_index": 20,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.9090725779533386,
+      "transition": 0.015493471175432205,
+      "drowsy": 0.07543404400348663
+    }
+  },
+  {
+    "epoch_index": 21,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.67457115650177,
+      "transition": 0.12943428754806519,
+      "drowsy": 0.19599460065364838
+    }
+  },
+  {
+    "epoch_index": 22,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6263905167579651,
+      "transition": 0.07219385355710983,
+      "drowsy": 0.3014155626296997
+    }
+  },
+  {
+    "epoch_index": 23,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.35973039269447327,
+      "transition": 0.24121691286563873,
+      "drowsy": 0.39905261993408203
+    }
+  },
+  {
+    "epoch_index": 24,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8509933948516846,
+      "transition": 0.0389043390750885,
+      "drowsy": 0.11010219901800156
+    }
+  },
+  {
+    "epoch_index": 25,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8344462513923645,
+      "transition": 0.05837423354387283,
+      "drowsy": 0.10717951506376266
+    }
+  },
+  {
+    "epoch_index": 26,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6399365067481995,
+      "transition": 0.12702815234661102,
+      "drowsy": 0.2330353856086731
+    }
+  },
+  {
+    "epoch_index": 27,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.165555939078331,
+      "transition": 0.5069621801376343,
+      "drowsy": 0.32748186588287354
+    }
+  },
+  {
+    "epoch_index": 28,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.17103874683380127,
+      "transition": 0.32284265756607056,
+      "drowsy": 0.5061185359954834
+    }
+  },
+  {
+    "epoch_index": 29,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.24199606478214264,
+      "transition": 0.2651767432689667,
+      "drowsy": 0.4928272068500519
+    }
+  },
+  {
+    "epoch_index": 30,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8389211893081665,
+      "transition": 0.04186752811074257,
+      "drowsy": 0.11921132355928421
+    }
+  },
+  {
+    "epoch_index": 31,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.13309799134731293,
+      "transition": 0.5799664855003357,
+      "drowsy": 0.2869355380535126
+    }
+  },
+  {
+    "epoch_index": 32,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.4387994408607483,
+      "transition": 0.3495715260505676,
+      "drowsy": 0.2116289585828781
+    }
+  },
+  {
+    "epoch_index": 33,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.2659936845302582,
+      "transition": 0.2433028668165207,
+      "drowsy": 0.4907035231590271
+    }
+  },
+  {
+    "epoch_index": 34,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.0725475326180458,
+      "transition": 0.5445395708084106,
+      "drowsy": 0.38291293382644653
+    }
+  },
+  {
+    "epoch_index": 35,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.5095863938331604,
+      "transition": 0.2469678372144699,
+      "drowsy": 0.24344579875469208
+    }
+  },
+  {
+    "epoch_index": 36,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7771585583686829,
+      "transition": 0.06444146484136581,
+      "drowsy": 0.15839995443820953
+    }
+  },
+  {
+    "epoch_index": 37,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.36815890669822693,
+      "transition": 0.3427320420742035,
+      "drowsy": 0.2891090512275696
+    }
+  },
+  {
+    "epoch_index": 38,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.505704939365387,
+      "transition": 0.23006977140903473,
+      "drowsy": 0.2642252445220947
+    }
+  },
+  {
+    "epoch_index": 39,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6650701761245728,
+      "transition": 0.10346148908138275,
+      "drowsy": 0.2314683198928833
+    }
+  },
+  {
+    "epoch_index": 40,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6233299970626831,
+      "transition": 0.13301721215248108,
+      "drowsy": 0.24365279078483582
+    }
+  },
+  {
+    "epoch_index": 41,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6023768186569214,
+      "transition": 0.131236270070076,
+      "drowsy": 0.2663869261741638
+    }
+  },
+  {
+    "epoch_index": 42,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.3673514425754547,
+      "transition": 0.30640387535095215,
+      "drowsy": 0.32624468207359314
+    }
+  },
+  {
+    "epoch_index": 43,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.2808231711387634,
+      "transition": 0.32263022661209106,
+      "drowsy": 0.3965465724468231
+    }
+  },
+  {
+    "epoch_index": 44,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.44610971212387085,
+      "transition": 0.3113524913787842,
+      "drowsy": 0.24253782629966736
+    }
+  },
+  {
+    "epoch_index": 45,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8000569939613342,
+      "transition": 0.06603338569402695,
+      "drowsy": 0.13390956819057465
+    }
+  },
+  {
+    "epoch_index": 46,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.49521854519844055,
+      "transition": 0.29923102259635925,
+      "drowsy": 0.2055504322052002
+    }
+  },
+  {
+    "epoch_index": 47,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.5417187213897705,
+      "transition": 0.2157069891691208,
+      "drowsy": 0.2425742894411087
+    }
+  },
+  {
+    "epoch_index": 48,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6935285329818726,
+      "transition": 0.11284933984279633,
+      "drowsy": 0.19362206757068634
+    }
+  },
+  {
+    "epoch_index": 49,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.36969950795173645,
+      "transition": 0.20466746389865875,
+      "drowsy": 0.4256330132484436
+    }
+  },
+  {
+    "epoch_index": 50,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7039511799812317,
+      "transition": 0.06235647574067116,
+      "drowsy": 0.23369233310222626
+    }
+  },
+  {
+    "epoch_index": 51,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.4674648940563202,
+      "transition": 0.1698487401008606,
+      "drowsy": 0.3626863956451416
+    }
+  },
+  {
+    "epoch_index": 52,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.5246449112892151,
+      "transition": 0.11341273784637451,
+      "drowsy": 0.3619424104690552
+    }
+  },
+  {
+    "epoch_index": 53,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.38971269130706787,
+      "transition": 0.23744575679302216,
+      "drowsy": 0.3728415369987488
+    }
+  },
+  {
+    "epoch_index": 54,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6002098321914673,
+      "transition": 0.12129522860050201,
+      "drowsy": 0.2784949243068695
+    }
+  },
+  {
+    "epoch_index": 55,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.858959972858429,
+      "transition": 0.046963177621364594,
+      "drowsy": 0.09407684952020645
+    }
+  },
+  {
+    "epoch_index": 56,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.07670877128839493,
+      "transition": 0.480683833360672,
+      "drowsy": 0.44260743260383606
+    }
+  },
+  {
+    "epoch_index": 57,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7827305197715759,
+      "transition": 0.05068710818886757,
+      "drowsy": 0.166582390666008
+    }
+  },
+  {
+    "epoch_index": 58,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.3993624448776245,
+      "transition": 0.31930896639823914,
+      "drowsy": 0.28132858872413635
+    }
+  },
+  {
+    "epoch_index": 59,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.21928484737873077,
+      "transition": 0.5705741047859192,
+      "drowsy": 0.21014107763767242
+    }
+  },
+  {
+    "epoch_index": 60,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.5155143141746521,
+      "transition": 0.20896857976913452,
+      "drowsy": 0.2755171060562134
+    }
+  },
+  {
+    "epoch_index": 61,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.28791114687919617,
+      "transition": 0.4604092240333557,
+      "drowsy": 0.2516796290874481
+    }
+  },
+  {
+    "epoch_index": 62,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8800780177116394,
+      "transition": 0.02889922261238098,
+      "drowsy": 0.09102268517017365
+    }
+  },
+  {
+    "epoch_index": 63,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.3238038420677185,
+      "transition": 0.3856891691684723,
+      "drowsy": 0.2905069887638092
+    }
+  },
+  {
+    "epoch_index": 64,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7527059316635132,
+      "transition": 0.1428304761648178,
+      "drowsy": 0.104463592171669
+    }
+  },
+  {
+    "epoch_index": 65,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7770903706550598,
+      "transition": 0.09254302084445953,
+      "drowsy": 0.13036668300628662
+    }
+  },
+  {
+    "epoch_index": 66,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.10389181971549988,
+      "transition": 0.6173970103263855,
+      "drowsy": 0.2787111699581146
+    }
+  },
+  {
+    "epoch_index": 67,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8359556794166565,
+      "transition": 0.045959074050188065,
+      "drowsy": 0.11808525770902634
+    }
+  },
+  {
+    "epoch_index": 68,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.25690242648124695,
+      "transition": 0.43452033400535583,
+      "drowsy": 0.3085772395133972
+    }
+  },
+  {
+    "epoch_index": 69,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8394941091537476,
+      "transition": 0.02551952190697193,
+      "drowsy": 0.13498635590076447
+    }
+  },
+  {
+    "epoch_index": 70,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6323999166488647,
+      "transition": 0.17510974407196045,
+      "drowsy": 0.19249026477336884
+    }
+  },
+  {
+    "epoch_index": 71,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.11427751183509827,
+      "transition": 0.6219556331634521,
+      "drowsy": 0.2637668251991272
+    }
+  },
+  {
+    "epoch_index": 72,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.47653627395629883,
+      "transition": 0.31012672185897827,
+      "drowsy": 0.2133369743824005
+    }
+  },
+  {
+    "epoch_index": 73,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8623487949371338,
+      "transition": 0.04702811688184738,
+      "drowsy": 0.09062309563159943
+    }
+  },
+  {
+    "epoch_index": 74,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8650799989700317,
+      "transition": 0.040642149746418,
+      "drowsy": 0.0942777693271637
+    }
+  },
+  {
+    "epoch_index": 75,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7369959950447083,
+      "transition": 0.07642824947834015,
+      "drowsy": 0.1865757405757904
+    }
+  },
+  {
+    "epoch_index": 76,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.9731591939926147,
+      "transition": 0.004335682839155197,
+      "drowsy": 0.022505220025777817
+    }
+  },
+  {
+    "epoch_index": 77,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6951561570167542,
+      "transition": 0.17236962914466858,
+      "drowsy": 0.13247418403625488
+    }
+  },
+  {
+    "epoch_index": 78,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.07585825771093369,
+      "transition": 0.6580265760421753,
+      "drowsy": 0.2661152482032776
+    }
+  },
+  {
+    "epoch_index": 79,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8484810590744019,
+      "transition": 0.031917113810777664,
+      "drowsy": 0.11960192024707794
+    }
+  },
+  {
+    "epoch_index": 80,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.3743688762187958,
+      "transition": 0.34897100925445557,
+      "drowsy": 0.2766600549221039
+    }
+  },
+  {
+    "epoch_index": 81,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6892711520195007,
+      "transition": 0.09622999280691147,
+      "drowsy": 0.2144988477230072
+    }
+  },
+  {
+    "epoch_index": 82,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6732237339019775,
+      "transition": 0.0916532650589943,
+      "drowsy": 0.23512305319309235
+    }
+  },
+  {
+    "epoch_index": 83,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.181165874004364,
+      "transition": 0.282408207654953,
+      "drowsy": 0.5364258289337158
+    }
+  },
+  {
+    "epoch_index": 84,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6537593603134155,
+      "transition": 0.1491396129131317,
+      "drowsy": 0.19710104167461395
+    }
+  },
+  {
+    "epoch_index": 85,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.41575050354003906,
+      "transition": 0.24081742763519287,
+      "drowsy": 0.34343206882476807
+    }
+  },
+  {
+    "epoch_index": 86,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.15601952373981476,
+      "transition": 0.4489799737930298,
+      "drowsy": 0.39500048756599426
+    }
+  },
+  {
+    "epoch_index": 87,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.48572078347206116,
+      "transition": 0.23688451945781708,
+      "drowsy": 0.2773946225643158
+    }
+  },
+  {
+    "epoch_index": 88,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6945313215255737,
+      "transition": 0.13818180561065674,
+      "drowsy": 0.16728678345680237
+    }
+  },
+  {
+    "epoch_index": 89,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.4118470549583435,
+      "transition": 0.28277426958084106,
+      "drowsy": 0.3053787052631378
+    }
+  },
+  {
+    "epoch_index": 90,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.28234460949897766,
+      "transition": 0.45620331168174744,
+      "drowsy": 0.2614521384239197
+    }
+  },
+  {
+    "epoch_index": 91,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.4394032955169678,
+      "transition": 0.2628917098045349,
+      "drowsy": 0.29770493507385254
+    }
+  },
+  {
+    "epoch_index": 92,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.44363924860954285,
+      "transition": 0.24516722559928894,
+      "drowsy": 0.3111934959888458
+    }
+  },
+  {
+    "epoch_index": 93,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7438138723373413,
+      "transition": 0.08228474855422974,
+      "drowsy": 0.17390134930610657
+    }
+  },
+  {
+    "epoch_index": 94,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.3648865818977356,
+      "transition": 0.3248229920864105,
+      "drowsy": 0.31029048562049866
+    }
+  },
+  {
+    "epoch_index": 95,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.32763388752937317,
+      "transition": 0.3081203103065491,
+      "drowsy": 0.36424577236175537
+    }
+  },
+  {
+    "epoch_index": 96,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.32718735933303833,
+      "transition": 0.2890331745147705,
+      "drowsy": 0.3837794363498688
+    }
+  },
+  {
+    "epoch_index": 97,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8244372606277466,
+      "transition": 0.05509971082210541,
+      "drowsy": 0.12046298384666443
+    }
+  },
+  {
+    "epoch_index": 98,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8630038499832153,
+      "transition": 0.053204312920570374,
+      "drowsy": 0.08379178494215012
+    }
+  },
+  {
+    "epoch_index": 99,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6405487060546875,
+      "transition": 0.11495233327150345,
+      "drowsy": 0.24449898302555084
+    }
+  },
+  {
+    "epoch_index": 100,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6426105499267578,
+      "transition": 0.1016056016087532,
+      "drowsy": 0.2557838559150696
+    }
+  },
+  {
+    "epoch_index": 101,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.5640877485275269,
+      "transition": 0.13580204546451569,
+      "drowsy": 0.30011022090911865
+    }
+  },
+  {
+    "epoch_index": 102,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.5497756600379944,
+      "transition": 0.17347300052642822,
+      "drowsy": 0.2767513394355774
+    }
+  },
+  {
+    "epoch_index": 103,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.2137822061777115,
+      "transition": 0.4900031089782715,
+      "drowsy": 0.2962147295475006
+    }
+  },
+  {
+    "epoch_index": 104,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.20633673667907715,
+      "transition": 0.48560023307800293,
+      "drowsy": 0.3080631196498871
+    }
+  },
+  {
+    "epoch_index": 105,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.319106787443161,
+      "transition": 0.26911476254463196,
+      "drowsy": 0.41177845001220703
+    }
+  },
+  {
+    "epoch_index": 106,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.447888046503067,
+      "transition": 0.27989429235458374,
+      "drowsy": 0.272217720746994
+    }
+  },
+  {
+    "epoch_index": 107,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.5145517587661743,
+      "transition": 0.12406623363494873,
+      "drowsy": 0.36138203740119934
+    }
+  },
+  {
+    "epoch_index": 108,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.46759918332099915,
+      "transition": 0.2581367790699005,
+      "drowsy": 0.27426400780677795
+    }
+  },
+  {
+    "epoch_index": 109,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.09065750241279602,
+      "transition": 0.433058500289917,
+      "drowsy": 0.4762839376926422
+    }
+  },
+  {
+    "epoch_index": 110,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8793990015983582,
+      "transition": 0.030741361901164055,
+      "drowsy": 0.08985956758260727
+    }
+  },
+  {
+    "epoch_index": 111,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.5309215784072876,
+      "transition": 0.12189649045467377,
+      "drowsy": 0.3471820056438446
+    }
+  },
+  {
+    "epoch_index": 112,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.21570844948291779,
+      "transition": 0.39928874373435974,
+      "drowsy": 0.38500282168388367
+    }
+  },
+  {
+    "epoch_index": 113,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.22702336311340332,
+      "transition": 0.4715566635131836,
+      "drowsy": 0.3014199435710907
+    }
+  },
+  {
+    "epoch_index": 114,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.3319571912288666,
+      "transition": 0.17420299351215363,
+      "drowsy": 0.4938398003578186
+    }
+  },
+  {
+    "epoch_index": 115,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.825197696685791,
+      "transition": 0.05379993095993996,
+      "drowsy": 0.12100239098072052
+    }
+  },
+  {
+    "epoch_index": 116,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6546440720558167,
+      "transition": 0.08599723130464554,
+      "drowsy": 0.259358674287796
+    }
+  },
+  {
+    "epoch_index": 117,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7148285508155823,
+      "transition": 0.10260804742574692,
+      "drowsy": 0.18256345391273499
+    }
+  },
+  {
+    "epoch_index": 118,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8383321762084961,
+      "transition": 0.062197327613830566,
+      "drowsy": 0.09947053343057632
+    }
+  },
+  {
+    "epoch_index": 119,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.9275029897689819,
+      "transition": 0.018095366656780243,
+      "drowsy": 0.05440156161785126
+    }
+  },
+  {
+    "epoch_index": 120,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.34845539927482605,
+      "transition": 0.2585703134536743,
+      "drowsy": 0.392974317073822
+    }
+  },
+  {
+    "epoch_index": 121,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.40440675616264343,
+      "transition": 0.3212569057941437,
+      "drowsy": 0.2743363380432129
+    }
+  },
+  {
+    "epoch_index": 122,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8434856534004211,
+      "transition": 0.07418284565210342,
+      "drowsy": 0.08233154565095901
+    }
+  },
+  {
+    "epoch_index": 123,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.38010090589523315,
+      "transition": 0.38681766390800476,
+      "drowsy": 0.2330814152956009
+    }
+  },
+  {
+    "epoch_index": 124,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6186412572860718,
+      "transition": 0.21566583216190338,
+      "drowsy": 0.16569289565086365
+    }
+  },
+  {
+    "epoch_index": 125,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.3189029395580292,
+      "transition": 0.3059127926826477,
+      "drowsy": 0.37518420815467834
+    }
+  },
+  {
+    "epoch_index": 126,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7281087636947632,
+      "transition": 0.0800962969660759,
+      "drowsy": 0.19179494678974152
+    }
+  },
+  {
+    "epoch_index": 127,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.5880323052406311,
+      "transition": 0.19260796904563904,
+      "drowsy": 0.21935969591140747
+    }
+  },
+  {
+    "epoch_index": 128,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.3957917392253876,
+      "transition": 0.24956949055194855,
+      "drowsy": 0.3546387553215027
+    }
+  },
+  {
+    "epoch_index": 129,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7753188014030457,
+      "transition": 0.07768795639276505,
+      "drowsy": 0.14699330925941467
+    }
+  },
+  {
+    "epoch_index": 130,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.21456213295459747,
+      "transition": 0.3261491358280182,
+      "drowsy": 0.45928871631622314
+    }
+  },
+  {
+    "epoch_index": 131,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.4905552864074707,
+      "transition": 0.10254158079624176,
+      "drowsy": 0.40690311789512634
+    }
+  },
+  {
+    "epoch_index": 132,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.461894690990448,
+      "transition": 0.10815613716840744,
+      "drowsy": 0.42994919419288635
+    }
+  },
+  {
+    "epoch_index": 133,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.24220360815525055,
+      "transition": 0.2730062007904053,
+      "drowsy": 0.48479020595550537
+    }
+  },
+  {
+    "epoch_index": 134,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.055940523743629456,
+      "transition": 0.5330541133880615,
+      "drowsy": 0.4110053777694702
+    }
+  },
+  {
+    "epoch_index": 135,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8331090211868286,
+      "transition": 0.029354318976402283,
+      "drowsy": 0.1375366747379303
+    }
+  },
+  {
+    "epoch_index": 136,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7697638869285583,
+      "transition": 0.05515602231025696,
+      "drowsy": 0.17508016526699066
+    }
+  },
+  {
+    "epoch_index": 137,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.5019863247871399,
+      "transition": 0.13980355858802795,
+      "drowsy": 0.35821008682250977
+    }
+  },
+  {
+    "epoch_index": 138,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8776738047599792,
+      "transition": 0.03818216174840927,
+      "drowsy": 0.08414406329393387
+    }
+  },
+  {
+    "epoch_index": 139,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8438302278518677,
+      "transition": 0.0540444552898407,
+      "drowsy": 0.10212534666061401
+    }
+  },
+  {
+    "epoch_index": 140,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.34266602993011475,
+      "transition": 0.38164564967155457,
+      "drowsy": 0.2756883502006531
+    }
+  },
+  {
+    "epoch_index": 141,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.28355175256729126,
+      "transition": 0.35277947783470154,
+      "drowsy": 0.3636687695980072
+    }
+  },
+  {
+    "epoch_index": 142,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.911382794380188,
+      "transition": 0.020982513204216957,
+      "drowsy": 0.06763459742069244
+    }
+  },
+  {
+    "epoch_index": 143,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7376353740692139,
+      "transition": 0.09462737292051315,
+      "drowsy": 0.16773727536201477
+    }
+  },
+  {
+    "epoch_index": 144,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.9267076849937439,
+      "transition": 0.018010003492236137,
+      "drowsy": 0.05528222769498825
+    }
+  },
+  {
+    "epoch_index": 145,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6894113421440125,
+      "transition": 0.08910173922777176,
+      "drowsy": 0.2214869260787964
+    }
+  },
+  {
+    "epoch_index": 146,
+    "predicted_label": "transition",
+    "probabilities": {
+      "alert": 0.2698304057121277,
+      "transition": 0.500177264213562,
+      "drowsy": 0.2299923598766327
+    }
+  },
+  {
+    "epoch_index": 147,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7150729894638062,
+      "transition": 0.06493601202964783,
+      "drowsy": 0.21999099850654602
+    }
+  },
+  {
+    "epoch_index": 148,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.7292830944061279,
+      "transition": 0.08633553236722946,
+      "drowsy": 0.1843814104795456
+    }
+  },
+  {
+    "epoch_index": 149,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.6171690821647644,
+      "transition": 0.0886414423584938,
+      "drowsy": 0.294189453125
+    }
+  },
+  {
+    "epoch_index": 150,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8138627409934998,
+      "transition": 0.1005651205778122,
+      "drowsy": 0.08557216823101044
+    }
+  },
+  {
+    "epoch_index": 151,
+    "predicted_label": "drowsy",
+    "probabilities": {
+      "alert": 0.3364432752132416,
+      "transition": 0.1836979240179062,
+      "drowsy": 0.47985878586769104
+    }
+  },
+  {
+    "epoch_index": 152,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.8724721074104309,
+      "transition": 0.02323598600924015,
+      "drowsy": 0.10429201275110245
+    }
+  },
+  {
+    "epoch_index": 153,
+    "predicted_label": "alert",
+    "probabilities": {
+      "alert": 0.829786479473114,
+      "transition": 0.053705357015132904,
+      "drowsy": 0.11650808900594711
+    }
+  }
+]
