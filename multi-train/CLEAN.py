@@ -31,7 +31,7 @@ REJECT_CRITERIA = dict(eeg=150e-6) # Reject epochs with p-p > 150 µV
 
 PSD_FMIN = 1.0
 PSD_FMAX = 40.0
-PSD_N_FFT = 256
+PSD_N_FFT = 512
 
 # --- Initialization ---
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -48,7 +48,6 @@ print(f"Labels based on RT between stimulus and response code {RESPONSE_CODE}")
 # --- Main Processing Loop ---
 for i, file_path in enumerate(set_files):
     print(f"\nProcessing file {i+1}/{len(set_files)}: {os.path.basename(file_path)}")
-    if (i > 2): break
     try:
 
         raw = mne.io.read_raw_eeglab(file_path, preload=True, verbose=False)
@@ -171,7 +170,8 @@ for i, file_path in enumerate(set_files):
         final_labels_kept = [final_labels_for_epochs[i] for i in kept_indices]
 
         print("  Calculating PSD features for kept epochs...")
-        #need to get 39 out 
+        
+        #need to get 39 out #FIX THIS why is it 20???
         psd = epochs.compute_psd(method='welch', fmin=PSD_FMIN, fmax=PSD_FMAX, n_fft=PSD_N_FFT, picks='eeg', verbose=False)
         psds_data = psd.get_data()
 
@@ -209,8 +209,20 @@ else:
     print(f"Label distribution: {dict(Counter(final_labels))}")
 
     scaler = StandardScaler()
-    features_scaled = scaler.fit_transform(final_features)
-    print("Scaled features shape:", features_scaled.shape)
+    n_epochs, n_channels, n_freqs = final_features.shape
+
+    # 1. Reshape to (n_epochs, n_channels * n_freqs)
+    features_reshaped = final_features.reshape(n_epochs, n_channels * n_freqs)
+    print(f"Reshaped features for scaling: {features_reshaped.shape}")
+
+    # 2. Apply StandardScaler
+    scaler = StandardScaler()
+    features_scaled_reshaped = scaler.fit_transform(features_reshaped)
+    print("Applied StandardScaler.")
+
+    # 3. Reshape back to (n_epochs, n_channels, n_freqs)
+    features_scaled = features_scaled_reshaped.reshape(n_epochs, n_channels, n_freqs)
+    print(f"Scaled features reshaped back to: {features_scaled.shape}")
 
     # Optional: Reshape for specific ML models (e.g., CNN/LSTM)
     # features_scaled_reshaped = np.reshape(features_scaled, (features_scaled.shape[0], features_scaled.shape[1], 1))

@@ -19,11 +19,14 @@ vq_losses = []
 vq_perplexities = []
 tf_test_accuracies = []
 tf_val_accuracies = []
+vq_val_losses = []
+vq_val_recon_losses = []
+vq_val_perplexities = []
 
 #EPOCHS_DATA_PATH = "D:/EEG/processed/combined_s02_epochs_ica_std.npy"
 #LABELS_PATH = "D:/EEG/processed/combined_s02_labels.npy"
-EPOCHS_DATA_PATH = "D:/EEG/processed/combined_s02_stimlocked_std_rej_psd_time_epochs.npy"
-LABELS_PATH = "D:/EEG/processed/combined_s02_stimlocked_std_rej_psd_labels.npy"
+EPOCHS_DATA_PATH = "D:/EEG/processed/stimlocked_psd_features_labeled_features.npy"
+LABELS_PATH = "D:/EEG/processed/stimlocked_psd_features_labeled_labels.npy"
 
 # Model Hyperparameters (Tune these!)
 # VQ-VAE
@@ -183,7 +186,7 @@ class VQVAE(nn.Module):
             nn.ReLU(),
             nn.ConvTranspose1d(256, 128, kernel_size=3, stride=1, padding=1),
             nn.ReLU(),
-            nn.ConvTranspose1d(128, 64, kernel_size=4, stride=2, padding=1), # Doubles timepoints
+            nn.ConvTranspose1d(128, 64, kernel_size=4, stride=2, padding=1, output_padding=1), # Doubles timepoints
             nn.ReLU(),
             nn.ConvTranspose1d(64, input_channels, kernel_size=4, stride=2, padding=1, output_padding=1) # Doubles timepoints
         )
@@ -326,17 +329,19 @@ class EncodedEEGDataset(Dataset):
 
 # --- 6. Training and Evaluation Functions ---
 
-def train_vqvae(model, dataloader, optimizer, epochs, device):
+def train_vqvae(model, train_loader, val_loader, optimizer, epochs, device): # Added val_loader
     model.train()
     print("--- Starting VQ-VAE Training ---")
     recon_criterion = nn.MSELoss()
 
     for epoch in range(epochs):
-        total_vq_loss = 0.0
-        total_recon_loss = 0.0
-        total_perplexity = 0.0
+        # --- Training Phase ---
+        model.train() # Set model to training mode
+        total_train_vq_loss = 0.0
+        total_train_recon_loss = 0.0
+        total_train_perplexity = 0.0
 
-        for batch_idx, (data, _) in enumerate(dataloader):
+        for batch_idx, (data, _) in enumerate(train_loader): # Use train_loader
             data = data.to(device)
             optimizer.zero_grad()
 
@@ -347,28 +352,60 @@ def train_vqvae(model, dataloader, optimizer, epochs, device):
             loss.backward()
             optimizer.step()
 
-            total_vq_loss += vq_loss.item()
-            total_recon_loss += recon_loss.item()
-            total_perplexity += perplexity.item()
+            total_train_vq_loss += vq_loss.item()
+            total_train_recon_loss += recon_loss.item()
+            total_train_perplexity += perplexity.item()
 
-            #if batch_idx % 10 == 0:
-                #print(f"VQ Epoch {epoch+1}/{epochs} | Batch {batch_idx}/{len(dataloader)} | "
-                #      f"Loss: {loss.item():.4f} (VQ: {vq_loss.item():.4f}, Recon: {recon_loss.item():.4f}) | "
-                #      f"Perplexity: {perplexity.item():.2f}")
 
-        avg_vq_loss = total_vq_loss / len(dataloader)
-        avg_recon_loss = total_recon_loss / len(dataloader)
-        avg_perplexity = total_perplexity / len(dataloader)
-        print(f"VQ Epoch {epoch+1} Avg Loss: {(avg_vq_loss + avg_recon_loss):.4f} (VQ: {avg_vq_loss:.4f}, Recon: {avg_recon_loss:.4f}, Avg Perplexity: {avg_perplexity:.2f})")
-        vq_losses.append(avg_vq_loss)
-        vq_perplexities.append(avg_perplexity)
+        avg_train_vq_loss = total_train_vq_loss / len(train_loader)
+        avg_train_recon_loss = total_train_recon_loss / len(train_loader)
+        avg_train_perplexity = total_train_perplexity / len(train_loader)
+        avg_train_total_loss = avg_train_vq_loss + avg_train_recon_loss
+
+        # --- Validation Phase ---
+        model.eval() # Set model to evaluation mode
+        total_val_vq_loss = 0.0
+        total_val_recon_loss = 0.0
+        total_val_perplexity = 0.0
+
+        with torch.no_grad(): # Disable gradient calculation for validation
+            for data, _ in val_loader:
+                data = data.to(device)
+                vq_loss, data_recon, perplexity, _ = model(data)
+                recon_loss = recon_criterion(data_recon, data) # Shapes should match
+
+                total_val_vq_loss += vq_loss.item()
+                total_val_recon_loss += recon_loss.item()
+                total_val_perplexity += perplexity.item()
+
+        avg_val_vq_loss = total_val_vq_loss / len(val_loader)
+        avg_val_recon_loss = total_val_recon_loss / len(val_loader)
+        avg_val_perplexity = total_val_perplexity / len(val_loader)
+        avg_val_total_loss = avg_val_vq_loss + avg_val_recon_loss
+
+        # Store validation metrics
+        vq_val_losses.append(avg_val_total_loss) # Or separate VQ/Recon if preferred
+        vq_val_recon_losses.append(avg_val_recon_loss)
+        vq_val_perplexities.append(avg_val_perplexity)
+
+        # Store training metrics (already done for perplexity)
+        vq_losses.append(avg_train_vq_loss) # Storing avg VQ loss from training
+        vq_perplexities.append(avg_train_perplexity)
+
+
+        print(f"VQ Epoch {epoch+1}/{epochs} | "
+              f"Train Loss: {avg_train_total_loss:.4f} (VQ: {avg_train_vq_loss:.4f}, Recon: {avg_train_recon_loss:.4f}) | Train Perplexity: {avg_train_perplexity:.2f} | "
+              f"Val Loss  : {avg_val_total_loss:.4f} (VQ: {avg_val_vq_loss:.4f}, Recon: {avg_val_recon_loss:.4f}) | Val Perplexity  : {avg_val_perplexity:.2f}")
 
 
     print("--- VQ-VAE Training Finished ---")
-    
-    if (avg_perplexity < PERCENT_CODEBOOK * VQ_NUM_EMBEDDINGS):
-        print(f" perplexity too low {avg_perplexity} to attempt training transformer, should be at least {int(100 * PERCENT_CODEBOOK)}% of codebook size: {VQ_NUM_EMBEDDINGS}")
-        exit()
+
+    # Use the final *training* perplexity for the check (or validation, depending on goal)
+    final_perplexity_check = avg_train_perplexity # Or avg_val_perplexity
+    if (final_perplexity_check < PERCENT_CODEBOOK * VQ_NUM_EMBEDDINGS):
+        print(f"Perplexity {final_perplexity_check:.2f} too low to attempt training transformer, should be at least {int(PERCENT_CODEBOOK * 100)}% of codebook size ({VQ_NUM_EMBEDDINGS}). Check VQ-VAE training.")
+        # Consider not exiting automatically, maybe just warn
+        # exit()
 
 
 def encode_data_for_transformer(vq_model, dataloader, device):
@@ -510,13 +547,30 @@ if __name__ == "__main__":
     
 
 
-    # --- Create Datasets and Dataloaders (for VQ-VAE training) ---
-    full_dataset = EEGDataset(epochs_data, labels, label_map)
+    
     # Note: We use the full dataset for unsupervised VQ-VAE training here.
-    # A separate split could be used if desired.
-    vq_dataloader = DataLoader(full_dataset, batch_size=BATCH_SIZE, shuffle=True)
+    # --- Split Data for VQ-VAE Training and Validation ---
+    # Stratify is less critical here as VQ-VAE is unsupervised, but doesn't hurt
+    vq_train_data, vq_val_data, vq_train_labels, vq_val_labels = train_test_split(
+        epochs_data,
+        labels, # Keep labels for potential stratified split, even if not used by VQ loss
+        test_size=TEST_SPLIT_RATIO, # Use the same ratio for simplicity
+        random_state=RANDOM_SEED,
+        stratify=labels
+    )
 
-    # --- Initialize and Train VQ-VAE ---
+    print(f"VQ Train data shape: {vq_train_data.shape}")
+    print(f"VQ Validation data shape: {vq_val_data.shape}")
+
+
+    # --- Create Datasets and Dataloaders (for VQ-VAE training/validation) ---
+    vq_train_dataset = EEGDataset(vq_train_data, vq_train_labels, label_map)
+    vq_val_dataset = EEGDataset(vq_val_data, vq_val_labels, label_map)
+
+    vq_train_loader = DataLoader(vq_train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+    vq_val_loader = DataLoader(vq_val_dataset, batch_size=BATCH_SIZE, shuffle=False) # No shuffle for validation
+
+    # --- Initialize VQ-VAE ---
     vq_model = VQVAE(input_channels=n_channels,
                      embedding_dim=VQ_EMBEDDING_DIM,
                      num_embeddings=VQ_NUM_EMBEDDINGS,
@@ -539,13 +593,15 @@ if __name__ == "__main__":
             exit()
     else:
         # Train the VQ-VAE
-        train_vqvae(vq_model, vq_dataloader, vq_optimizer, VQ_EPOCHS, device)
+        train_vqvae(vq_model, vq_train_loader, vq_val_loader, vq_optimizer, VQ_EPOCHS, device)
         # Save the trained VQ-VAE
         print(f"Saving trained VQ-VAE model to {VQ_MODEL_SAVE_PATH}")
         torch.save(vq_model.state_dict(), VQ_MODEL_SAVE_PATH)
 
     # --- Encode the Full Dataset using Trained VQ-VAE ---
     # Create a dataloader *without* shuffling to keep data and labels aligned
+    # --- Create Datasets and Dataloaders (for VQ-VAE training) ---
+    full_dataset = EEGDataset(epochs_data, labels, label_map)
     full_dataloader_no_shuffle = DataLoader(full_dataset, batch_size=BATCH_SIZE, shuffle=False)
     encoded_indices, original_int_labels = encode_data_for_transformer(vq_model, full_dataloader_no_shuffle, device)
 
@@ -681,24 +737,40 @@ if __name__ == "__main__":
     plt.show()
 
 
-    plt.figure(figsize=(12, 5))
-    # Loss Plot
-    plt.subplot(1, 2, 1)
-    plt.plot(vq_losses, label=' vq loss')
-    plt.plot(vq_perplexities, label='vq perplexity')
+    plt.figure(figsize=(18, 5)) # Wider figure
+
+    # VQ Loss/Perplexity Plot
+    plt.subplot(1, 3, 1) # Changed to 1, 3, 1
+    plt.plot([l + r for l, r in zip(vq_losses, [rec for rec in vq_val_recon_losses])], label='Train Total Loss (VQ+Recon Approx)') # Approximate total train loss
+    plt.plot(vq_val_losses, label='Val Total Loss')
+    # Optional: plot components
+    # plt.plot(vq_losses, label='Train VQ Loss')
+    # plt.plot(vq_val_recon_losses, label='Val Recon Loss')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
-    plt.title('Loss Curve')
+    plt.title('VQ-VAE Loss Curves')
     plt.legend()
+    plt.grid(True)
 
-    # Accuracy Plot
-    plt.subplot(1, 2, 2)
-    plt.plot(tf_test_accuracies, label='Train Accuracy')
+    plt.subplot(1, 3, 2) # Changed to 1, 3, 2
+    plt.plot(vq_perplexities, label='Train Perplexity')
+    plt.plot(vq_val_perplexities, label='Val Perplexity')
+    plt.xlabel('Epoch')
+    plt.ylabel('Perplexity')
+    plt.title('VQ-VAE Perplexity')
+    plt.legend()
+    plt.grid(True)
+
+
+    # Transformer Accuracy Plot
+    plt.subplot(1, 3, 3) # Changed to 1, 3, 3
+    plt.plot(tf_test_accuracies, label='Train Accuracy') # Note: This was named test, likely meant train accuracy during epoch
     plt.plot(tf_val_accuracies, label='Val Accuracy')
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
-    plt.title('Accuracy Curve')
+    plt.title('Transformer Accuracy Curve')
     plt.legend()
+    plt.grid(True)
 
     plt.tight_layout()
     plt.show()

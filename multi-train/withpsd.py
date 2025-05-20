@@ -87,7 +87,7 @@ total_epochs_after_rejection = 0
 for i, file_path in enumerate(set_files):
     print(f"\n--- Processing File {i+1}/{len(set_files)}: {os.path.basename(file_path)} ---")
     current_file_processed_epochs = 0 # Track epochs added from this file
-    if (i > 10): break
+    #if (i > 10): break
     try:
         # --- 1. Load Data ---
         # Suppress specific EEGLAB reading warnings if they are noisy
